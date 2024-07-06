@@ -1,8 +1,7 @@
+import Link from "next/link";
 import React from "react";
 import RenderTag from "../shared/RenderTag";
-import Image from "next/image";
 import Metric from "../shared/Metric";
-import Link from "next/link";
 import { formatAndDivideNumber, getTimestamp } from "@/lib/utils";
 
 interface QuestionProps {
@@ -34,32 +33,35 @@ const QuestionCard = ({
   createdAt,
 }: QuestionProps) => {
   return (
-    <div className="card-wrapper rounded-[10px] p-9 sm:px-11 ">
+    <div className="card-wrapper rounded-[10px] p-9 sm:px-11">
       <div className="flex flex-col-reverse items-start justify-between gap-5 sm:flex-row">
         <div>
           <span className="subtle-regular text-dark400_light700 line-clamp-1 flex sm:hidden">
             {getTimestamp(createdAt)}
           </span>
-          <Link
-            href={`/question/${_id}`}
-            className="sm:h3-semibold base-semibold text-dark200_light900 line-clamp-1 flex-1"
-          >
-            <h3>{title}</h3>
+          <Link href={`/question/${_id}`}>
+            <h3 className="sm:h3-semibold base-semibold text-dark200_light900 line-clamp-1 flex-1">
+              {title}
+            </h3>
           </Link>
         </div>
+
+        {/* If signed in add edit delete actions */}
       </div>
+
       <div className="mt-3.5 flex flex-wrap gap-2">
         {tags.map((tag) => (
           <RenderTag key={tag._id} _id={tag._id} name={tag.name} />
         ))}
       </div>
+
       <div className="flex-between mt-6 w-full flex-wrap gap-3">
         <Metric
-          imgUrl={author.picture}
+          imgUrl="/assets/icons/avatar.svg"
           alt="user"
           value={author.name}
-          title={getTimestamp(createdAt)}
-          href={`/profine/${author._id}`}
+          title={` - asked ${getTimestamp(createdAt)}`}
+          href={`/profile/${author._id}`}
           isAuthor
           textStyles="body-medium text-dark400_light700"
         />

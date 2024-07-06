@@ -1,10 +1,11 @@
+import QuestionCard from "@/components/cards/QuestionCard";
 import HomeFilters from "@/components/home/HomeFilters";
 import Filter from "@/components/shared/Filter";
 import NoResult from "@/components/shared/NoResult";
-import QuestionCard from "@/components/cards/QuestionCard";
 import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
 import { Button } from "@/components/ui/button";
 import { HomePageFilters } from "@/constants/filters";
+import { getQuestions } from "@/lib/actions/question.action";
 import Link from "next/link";
 
 const questions = [
@@ -18,7 +19,7 @@ const questions = [
     author: {
       _id: "1",
       name: "John Doe",
-      picture: "assets/icons/avatar.svg",
+      picture: "john-doe.jpg",
     },
     upvotes: 1500000,
     views: 500552,
@@ -35,7 +36,7 @@ const questions = [
     author: {
       _id: "2",
       name: "Jane Smith",
-      picture: "assets/icons/avatar.svg",
+      picture: "jane-smith.jpg",
     },
     upvotes: 5,
     views: 50,
@@ -44,7 +45,9 @@ const questions = [
   },
 ];
 
-export default function Home() {
+export default async function Home() {
+  const result = await getQuestions({});
+
   return (
     <>
       <div className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
@@ -74,9 +77,10 @@ export default function Home() {
       </div>
 
       <HomeFilters />
+
       <div className="mt-10 flex w-full flex-col gap-6">
-        {questions.length > 0 ? (
-          questions.map((question) => (
+        {result.questions.length > 0 ? (
+          result.questions.map((question) => (
             <QuestionCard
               key={question._id}
               _id={question._id}
