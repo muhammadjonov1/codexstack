@@ -11,7 +11,7 @@ export async function getQuestions(params: GetQuestionsParams) {
   try {
     connectToDatabase();
 
-    const { page, pageSize, searchQuery, filter } = params;
+    // const { page, pageSize, searchQuery, filter } = params;
 
     const questions = await Question.find({})
       .populate({ path: "tags", model: Tag })
