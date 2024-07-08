@@ -68,7 +68,10 @@ export async function POST(req: Request) {
       picture: image_url,
     });
 
-    return NextResponse.json({ message: "OK", user: mongoUser });
+    return NextResponse.json(
+      { message: "OK", user: mongoUser },
+      { status: 200 }
+    );
   }
 
   if (eventType === "user.updated") {
@@ -87,7 +90,10 @@ export async function POST(req: Request) {
       path: `/profile/${id}`,
     });
 
-    return NextResponse.json({ message: "OK", user: mongoUser });
+    return NextResponse.json(
+      { message: "OK", user: mongoUser },
+      { status: 200 }
+    );
   }
 
   if (eventType === "user.deleted") {
@@ -97,7 +103,10 @@ export async function POST(req: Request) {
       clerkId: id!,
     });
 
-    return NextResponse.json({ message: "OK", user: deletedUser });
+    return NextResponse.json(
+      { message: "OK", user: deletedUser },
+      { status: 200 }
+    );
   }
 
   return new Response("", { status: 201 });
