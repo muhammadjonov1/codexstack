@@ -1,7 +1,24 @@
+"use client";
+
 import React from "react";
+import { Form } from "../ui/form";
+import { useForm } from "react-hook-form";
+import { AnswerSchema } from "@/lib/validations";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const Answer = () => {
-  return <div>Answer</div>;
+  const form = useForm<z.infer<typeof AnswerSchema>>({
+    resolver: zodResolver(AnswerSchema),
+    defaultValues: {
+      answer: "",
+    },
+  });
+  return (
+    <Form {...form}>
+      <form></form>
+    </Form>
+  );
 };
 
 export default Answer;
