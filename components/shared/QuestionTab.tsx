@@ -1,6 +1,6 @@
 import React from "react";
 
-const QuestionTab = () => {
+const QuestionTab = ({ searchParams, userId, clerkId }) => {
   return <div>QuestionTab</div>;
 };
 
