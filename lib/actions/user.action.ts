@@ -137,8 +137,8 @@ export async function deleteUser(params: DeleteUserParams) {
 export async function getSavedQuestions(params: GetSavedQuestionsParams) {
   try {
     connectToDatabase();
-
-    const { clerkId, page = 1, pageSize = 10, filter, searchQuery } = params;
+    // page = 1, pageSize = 10, filter,
+    const { clerkId, searchQuery } = params;
 
     const query: FilterQuery<typeof Question> = searchQuery
       ? { title: { $regex: new RegExp(searchQuery, "i") } }
