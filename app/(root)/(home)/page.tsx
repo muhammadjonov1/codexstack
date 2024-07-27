@@ -6,10 +6,12 @@ import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
 import { Button } from "@/components/ui/button";
 import { HomePageFilters } from "@/constants/filters";
 import { getQuestions } from "@/lib/actions/question.action";
+import { auth } from "@clerk/nextjs/server";
 import Link from "next/link";
 
 export default async function Home() {
   const result = await getQuestions({});
+  const { userId: clerkId } = auth();
 
   return (
     <>
