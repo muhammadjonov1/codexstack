@@ -6,6 +6,7 @@ import { connectToDatabase } from "../mongoose";
 import {
   CreateQuestionParams,
   DeleteQuestionParams,
+  EditQuestionParams,
   GetQuestionByIdParams,
   GetQuestionsParams,
   QuestionVoteParams,
@@ -95,7 +96,8 @@ export async function upvoteQuestion(params: QuestionVoteParams) {
     connectToDatabase();
 
     const { questionId, userId, hasupVoted, hasdownVoted, path } = params;
-    let updateQuery;
+
+    let updateQuery = {};
 
     if (hasupVoted) {
       updateQuery = { $pull: { upvotes: userId } };
@@ -111,9 +113,12 @@ export async function upvoteQuestion(params: QuestionVoteParams) {
     const question = await Question.findByIdAndUpdate(questionId, updateQuery, {
       new: true,
     });
+
     if (!question) {
       throw new Error("Question not found");
     }
+
+    // Increment author's reputation
 
     revalidatePath(path);
   } catch (error) {
@@ -128,10 +133,10 @@ export async function downvoteQuestion(params: QuestionVoteParams) {
 
     const { questionId, userId, hasupVoted, hasdownVoted, path } = params;
 
-    let updateQuery;
+    let updateQuery = {};
 
     if (hasdownVoted) {
-      updateQuery = { $pull: { downvotes: userId } };
+      updateQuery = { $pull: { downvote: userId } };
     } else if (hasupVoted) {
       updateQuery = {
         $pull: { upvotes: userId },
@@ -144,9 +149,13 @@ export async function downvoteQuestion(params: QuestionVoteParams) {
     const question = await Question.findByIdAndUpdate(questionId, updateQuery, {
       new: true,
     });
+
     if (!question) {
       throw new Error("Question not found");
     }
+
+    // Increment author's reputation
+
     revalidatePath(path);
   } catch (error) {
     console.log(error);
@@ -167,6 +176,29 @@ export async function deleteQuestion(params: DeleteQuestionParams) {
       { questions: questionId },
       { $pull: { questions: questionId } }
     );
+
+    revalidatePath(path);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function editQuestion(params: EditQuestionParams) {
+  try {
+    connectToDatabase();
+
+    const { questionId, title, content, path } = params;
+
+    const question = await Question.findById(questionId).populate("tags");
+
+    if (!question) {
+      throw new Error("Question not found");
+    }
+
+    question.title = title;
+    question.content = content;
+
+    await question.save();
 
     revalidatePath(path);
   } catch (error) {

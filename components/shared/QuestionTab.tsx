@@ -8,10 +8,10 @@ interface Props extends SearchParamsProps {
   clerkId?: string | null;
 }
 
-const QuestionTab = async ({ searchProps, userId, clerkId }: Props) => {
+const QuestionTab = async ({ searchParams, userId, clerkId }: Props) => {
   const result = await getUserQuestions({
     userId,
-    page: 1,
+    page: searchParams.page ? +searchParams.page : 1,
   });
 
   return (
@@ -30,6 +30,8 @@ const QuestionTab = async ({ searchProps, userId, clerkId }: Props) => {
           createdAt={question.createdAt}
         />
       ))}
+
+      <div className="mt-10"></div>
     </>
   );
 };
