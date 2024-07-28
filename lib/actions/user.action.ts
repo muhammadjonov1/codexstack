@@ -17,6 +17,7 @@ import Question from "@/database/question.model";
 import { FilterQuery } from "mongoose";
 import Tag from "@/database/tag.model";
 import Answer from "@/database/answer.model";
+import { clerkClient } from "@clerk/nextjs/server";
 
 export async function getAllUsers(params: GetAllUsersParams) {
   try {
@@ -96,7 +97,7 @@ export async function updateUser(params: UpdateUserParams) {
     await User.findOneAndUpdate({ clerkId }, updateData, {
       new: true,
     });
-
+    await clerkClient.users.updateUser(clerkId, updateData);
     revalidatePath(path);
   } catch (error) {
     console.log(error);
