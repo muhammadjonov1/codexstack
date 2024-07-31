@@ -3,6 +3,7 @@
 import Question from "@/database/question.model";
 import Tag from "@/database/tag.model";
 import { connectToDatabase } from "../mongoose";
+import { FilterQuery } from "mongoose";
 import {
   CreateQuestionParams,
   DeleteQuestionParams,
@@ -19,9 +20,21 @@ import Interaction from "@/database/interaction.model";
 export async function getQuestions(params: GetQuestionsParams) {
   try {
     connectToDatabase();
+    const { searchQuery } = params;
+    const query: FilterQuery<typeof Question> = searchQuery
+      ? {
+          $or: [
+            { title: { $regex: searchQuery, $options: "i" } },
+            { content: { $regex: searchQuery, $options: "i" } },
+          ],
+        }
+      : {};
 
-    const questions = await Question.find({})
-      .populate({ path: "tags", model: Tag })
+    const questions = await Question.find(query)
+      .populate({
+        path: "tags",
+        model: Tag,
+      })
       .populate({ path: "author", model: User })
       .sort({ createdAt: -1 });
 
