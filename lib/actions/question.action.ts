@@ -20,25 +20,47 @@ import Interaction from "@/database/interaction.model";
 export async function getQuestions(params: GetQuestionsParams) {
   try {
     connectToDatabase();
-    const { searchQuery } = params;
-    const query: FilterQuery<typeof Question> = searchQuery
-      ? {
-          $or: [
-            { title: { $regex: searchQuery, $options: "i" } },
-            { content: { $regex: searchQuery, $options: "i" } },
-          ],
-        }
-      : {};
+
+    const { searchQuery, filter, page = 1, pageSize = 2 } = params;
+
+    const skip = (page - 1) * pageSize;
+
+    const query: FilterQuery<typeof Question> = {};
+
+    if (searchQuery) {
+      query.$or = [
+        { title: { $regex: new RegExp(searchQuery, "i") } },
+        { content: { $regex: new RegExp(searchQuery, "i") } },
+      ];
+    }
+
+    let sortOptions = {};
+
+    switch (filter) {
+      case "newest":
+        sortOptions = { createdAt: -1 };
+        break;
+      case "frequent":
+        sortOptions = { views: -1 };
+        break;
+      case "unanswered":
+        query.answers = { $size: 0 };
+        break;
+      default:
+        break;
+    }
 
     const questions = await Question.find(query)
-      .populate({
-        path: "tags",
-        model: Tag,
-      })
+      .populate({ path: "tags", model: Tag })
       .populate({ path: "author", model: User })
-      .sort({ createdAt: -1 });
+      .skip(skip)
+      .limit(pageSize)
+      .sort(sortOptions);
 
-    return { questions };
+    const totalQuestions = await Question.countDocuments(query);
+    const isNext = totalQuestions > skip + questions.length;
+
+    return { questions, isNext };
   } catch (error) {
     console.log(error);
     throw error;
