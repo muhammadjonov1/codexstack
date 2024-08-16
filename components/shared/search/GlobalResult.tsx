@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import GlobalFilters from "./GlobalFilters";
+import { globalSearch } from "@/lib/actions/general.action";
 
 const GlobalResult = () => {
   const searchParams = useSearchParams();
@@ -26,7 +27,9 @@ const GlobalResult = () => {
       setIsLoading(true);
 
       try {
-        // DO EVERYTHING
+        const res = await globalSearch({ query: global, type });
+
+        setResult(JSON.parse(res));
       } catch (error) {
         console.error(error);
         throw error;
@@ -34,6 +37,10 @@ const GlobalResult = () => {
         setIsLoading(false);
       }
     };
+
+    if (global) {
+      fetchResult();
+    }
   }, [global, type]);
 
   const renderLink = (type: string, id: string) => {
@@ -55,6 +62,7 @@ const GlobalResult = () => {
     <div className="absolute top-full z-10 mt-3 w-full rounded-xl bg-light-800 py-5 shadow-sm dark:bg-dark-400">
       <GlobalFilters />
       <div className="my-5 h-px bg-light-700/50 dark:bg-dark-500/50" />
+
       <div className="space-y-5">
         <p className="text-dark400_light900 paragraph-semibold px-5">
           Top Match
