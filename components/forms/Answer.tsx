@@ -19,6 +19,7 @@ import Image from "next/image";
 import { createAnswer } from "@/lib/actions/answer.action";
 import { usePathname } from "next/navigation";
 import { marked } from "marked";
+import { toast } from "@/components/ui/use-toast";
 
 interface Props {
   question: string;
@@ -40,6 +41,12 @@ const Answer = ({ question, questionId, authorId }: Props) => {
   });
 
   const handleCreateAnswer = async (values: z.infer<typeof AnswerSchema>) => {
+    if (!authorId) {
+      return toast({
+        title: "Please log in",
+        description: "You must be logged in to perform this action",
+      });
+    }
     setIsSubmitting(true);
 
     try {
@@ -48,6 +55,11 @@ const Answer = ({ question, questionId, authorId }: Props) => {
         author: JSON.parse(authorId),
         question: JSON.parse(questionId),
         path: pathname,
+      });
+
+      toast({
+        title: `${values.answer && "Answer posted"}`,
+        description: "Your answer has been posted successfully",
       });
 
       form.reset();
@@ -65,7 +77,12 @@ const Answer = ({ question, questionId, authorId }: Props) => {
   };
 
   const generateAIAnswer = async () => {
-    if (!authorId) return;
+    if (!authorId) {
+      return toast({
+        title: "Please log in",
+        description: "You must be logged in to perform this action",
+      });
+    }
     setIsSubmittingAI(true);
     try {
       const response = await fetch(
@@ -80,7 +97,7 @@ const Answer = ({ question, questionId, authorId }: Props) => {
       );
 
       const data = await response.json();
-      const aiAnswer = data.aiAnswer; // Access aiAnswer directly
+      const aiAnswer = data.aiAnswer;
 
       const html = marked.parse(aiAnswer);
 
@@ -88,9 +105,17 @@ const Answer = ({ question, questionId, authorId }: Props) => {
         const editor = editorRef.current as any;
         editor.setContent(html);
       }
-      // Toast...
-    } catch (error) {
-      console.log(error);
+
+      return toast({
+        title: `${aiAnswer && "AI answer generated"}`,
+        description: "AI answer generated successfully",
+      });
+    } catch (error: any) {
+      return toast({
+        title: `${error?.message}`,
+        variant: "destructive",
+        description: `${error?.code}`,
+      });
     } finally {
       setIsSubmittingAI(false);
     }
