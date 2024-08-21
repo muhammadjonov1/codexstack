@@ -4,6 +4,19 @@ import Pagination from "@/components/shared/Pagination";
 import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
 import { getQuestionsByTagId } from "@/lib/actions/tag.actions";
 import { URLProps } from "@/types";
+import { Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: URLProps): Promise<Metadata> {
+  const { tagTitle } = await getQuestionsByTagId({
+    tagId: params.id,
+  });
+  return {
+    title: `Tag: ${tagTitle} | CodeXStack`,
+    description: `Explore questions related to the tag "${tagTitle}" on CodeXStack.`,
+  };
+}
 
 const Page = async ({ params, searchParams }: URLProps) => {
   const result = await getQuestionsByTagId({

@@ -21,7 +21,7 @@ export async function generateMetadata({
   const userInfo = await getUserInfo({ userId: params.id });
 
   return {
-    title: `${userInfo.user.name} Profile`,
+    title: `Profile of ${userInfo.user.name} | CodeXStack`,
     description: `Explore your own or other users' profiles on CodeXStack. View contributions, including questions, answers, and earned badges.
     Edit your profile to highlight your expertise, or browse through others' achievements and activities in the community.`,
   };

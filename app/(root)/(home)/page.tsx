@@ -13,8 +13,9 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Home",
-  description: "CodeXStack is a community of 1,000,000+ developers. Join us",
+  title: "Home | CodeXStack",
+  description:
+    "Explore CodeXStack, where developers connect, share insights, and engage in lively discussions. Discover trending questions, join the conversation, and contribute to a thriving tech community.",
 };
 
 export default async function Home({ searchParams }: SearchParamsProps) {

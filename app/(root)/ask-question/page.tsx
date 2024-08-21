@@ -1,8 +1,15 @@
 import Question from "@/components/forms/Question";
 import { getUserById } from "@/lib/actions/user.action";
 import { auth } from "@clerk/nextjs/server";
+import { Metadata } from "next";
 import { redirect } from "next/navigation";
 import React from "react";
+
+export const metadata: Metadata = {
+  title: "Ask a Question | CodeXStack",
+  description:
+    "Have a question you'd like to discuss with the community? Share it here and get helpful insights from fellow developers.",
+};
 
 const Page = async () => {
   const { userId } = auth();

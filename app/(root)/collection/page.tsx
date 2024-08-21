@@ -7,6 +7,13 @@ import { QuestionFilters } from "@/constants/filters";
 import { getSavedQuestions } from "@/lib/actions/user.action";
 import { SearchParamsProps } from "@/types";
 import { auth } from "@clerk/nextjs/server";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Collection | CodeXStack",
+  description:
+    "Access and manage the content you've saved for later reference.",
+};
 
 export default async function Page({ searchParams }: SearchParamsProps) {
   const { userId } = auth();

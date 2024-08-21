@@ -3,6 +3,17 @@ import { getQuestionById } from "@/lib/actions/question.action";
 import { getUserById } from "@/lib/actions/user.action";
 import { ParamsProps } from "@/types";
 import { auth } from "@clerk/nextjs/server";
+import { Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: ParamsProps): Promise<Metadata> {
+  const result = await getQuestionById({ questionId: params.id });
+  return {
+    title: `Edit ${result.title} | CodeXStack`,
+    description: `Edit the details of the question titled "${result.title}" on CodeXStack.`,
+  };
+}
 
 const Page = async ({ params }: ParamsProps) => {
   const { userId } = auth();

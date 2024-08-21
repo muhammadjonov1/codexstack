@@ -2,15 +2,7 @@ import LeftSidebar from "@/components/shared/LeftSidebar";
 import RightSidebar from "@/components/shared/RightSidebar";
 import Navbar from "@/components/shared/navbar/Navbar";
 import { Toaster } from "@/components/ui/toaster";
-import { Metadata } from "next";
 import React from "react";
-
-export const metadata: Metadata = {
-  title: {
-    default: "CodeXStack",
-    template: "CodeXStack | %s",
-  },
-};
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
