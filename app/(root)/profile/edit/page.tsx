@@ -9,14 +9,6 @@ export async function generateMetadata({
 }: ParamsProps): Promise<Metadata> {
   const { userId } = auth();
 
-  if (!userId) {
-    return {
-      title: "Profile | CodeXStack",
-      description:
-        "Customize your CodeXStack profile with the latest information about yourself and your expertise.",
-    };
-  }
-
   const mongoUser = await getUserById({ userId });
 
   return {
