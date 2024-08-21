@@ -25,11 +25,10 @@ export async function generateMetadata({
       "Customize your CodeXStack profile with the latest information about yourself and your expertise.",
   };
 }
-
 const Page = async ({ params }: ParamsProps) => {
   const { userId } = auth();
 
-  if (!userId) return <p>User not authenticated</p>;
+  if (!userId) return null;
 
   const mongoUser = await getUserById({ userId });
 
@@ -38,7 +37,7 @@ const Page = async ({ params }: ParamsProps) => {
       <h1 className="h1-bold text-dark100_light900">Edit Profile</h1>
 
       <div className="mt-9">
-        <Profile clerkId={userId} user={mongoUser} />
+        <Profile clerkId={userId} user={JSON.stringify(mongoUser)} />
       </div>
     </>
   );
