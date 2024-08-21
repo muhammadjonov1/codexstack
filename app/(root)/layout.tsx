@@ -7,8 +7,8 @@ import React from "react";
 
 export const metadata: Metadata = {
   title: {
-    default: "DevFlow",
-    template: "DevFlow | %s",
+    default: "CodeXStack",
+    template: "CodeXStack | %s",
   },
 };
 

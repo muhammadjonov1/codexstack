@@ -22,7 +22,7 @@ export async function generateMetadata({
 
   return {
     title: `${userInfo.user.name} Profile`,
-    description: `Explore your own or other users' profiles on DevFlow. View contributions, including questions, answers, and earned badges.
+    description: `Explore your own or other users' profiles on CodeXStack. View contributions, including questions, answers, and earned badges.
     Edit your profile to highlight your expertise, or browse through others' achievements and activities in the community.`,
   };
 }
