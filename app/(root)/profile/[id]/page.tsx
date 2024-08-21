@@ -13,6 +13,19 @@ import ProfileLink from "@/components/shared/ProfileLink";
 import Stats from "@/components/shared/Stats";
 import QuestionTab from "@/components/shared/QuestionTab";
 import AnswersTab from "@/components/shared/AnswersTab";
+import { Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: URLProps): Promise<Metadata> {
+  const userInfo = await getUserInfo({ userId: params.id });
+
+  return {
+    title: `${userInfo.user.name} Profile`,
+    description: `Explore your own or other users' profiles on DevFlow. View contributions, including questions, answers, and earned badges.
+    Edit your profile to highlight your expertise, or browse through others' achievements and activities in the community.`,
+  };
+}
 
 const Page = async ({ params, searchParams }: URLProps) => {
   const { userId: clerkId } = auth();
