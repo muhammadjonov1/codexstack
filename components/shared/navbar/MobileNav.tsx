@@ -23,8 +23,6 @@ const NavContent = () => {
           (pathname.includes(item.route) && item.route.length > 1) ||
           pathname === item.route;
 
-        // TODO
-
         return (
           <SheetClose asChild key={item.route}>
             <Link
