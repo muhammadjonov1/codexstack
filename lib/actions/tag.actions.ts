@@ -26,7 +26,6 @@ export const getTopInteractedTags = async (
       throw new Error("User not found");
     }
 
-    // todo: Find interactions for the user and group by tags
     const tagCountMap = await Interaction.aggregate([
       { $match: { user: user._id, tags: { $exists: true, $ne: [] } } },
       { $unwind: "$tags" },
@@ -38,7 +37,6 @@ export const getTopInteractedTags = async (
     // topTags
     const topTags = tagCountMap.map((tagCount) => tagCount._id);
 
-    // todo : find the tag documents for the top tags
     const topTagDocuments = await Tag.find({ _id: { $in: topTags } });
 
     return topTagDocuments;

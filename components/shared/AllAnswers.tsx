@@ -42,7 +42,6 @@ const AllAnswers = async ({
         {result.answers.map((answer) => (
           <article key={answer._id} className="light-border border-b py-10">
             <div className="flex items-center justify-between">
-              {/* {TODO: Add span ID} */}
               <div className="mb-8 flex basis-full flex-col-reverse justify-between gap-5 sm:flex-row sm:items-center sm:gap-2">
                 <Link
                   href={`/profile/${answer.author.clerkId}`}
