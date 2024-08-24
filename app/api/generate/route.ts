@@ -13,7 +13,7 @@ export async function POST(req: Request) {
         providers: "cohere",
         text: `Tell me ${question}`,
         temperature: 0.2,
-        max_tokens: 250,
+        max_tokens: 2000,
       }),
     });
     const data = await response.json();
@@ -25,7 +25,6 @@ export async function POST(req: Request) {
     }
 
     const aiAnswer = data?.cohere?.generated_text;
-    console.log(aiAnswer);
     return NextResponse.json({ aiAnswer });
   } catch (error) {
     const err = error as Error;
