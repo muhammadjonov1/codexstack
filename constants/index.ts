@@ -12,14 +12,6 @@ export const topQuestions = [
   { id: 5, title: "Async/Await Function Not Handling Errors Properly" },
 ];
 
-export const popularTags = [
-  { id: 1, name: "nextjs", count: 32 },
-  { id: 2, name: "test", count: 19 },
-  { id: 3, name: "React", count: 17 },
-  { id: 4, name: "CSS", count: 13 },
-  { id: 5, name: "Next js", count: 9 },
-];
-
 export const themes = [
   { value: "light", label: "Light", icon: "/assets/icons/sun.svg" },
   { value: "dark", label: "Dark", icon: "/assets/icons/moon.svg" },
